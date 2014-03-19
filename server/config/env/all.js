@@ -12,4 +12,4 @@ module.exports = {
 
 	// The name of the MongoDB collection to store sessions in
 	sessionCollection: 'sessions'
-}
+};

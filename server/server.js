@@ -2,7 +2,7 @@
 /**
  * Main application entry file.
  */
-console.log('MU VLEZE!');
+
 // Module dependencies.
 var express = require('express'),
     passport = require('passport');
@@ -15,7 +15,7 @@ var fileHelper = require('./helpers/file');
 // Set the node environment variable if not set before
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Initializing system variables 
+// Initializing system variables
 var config = require('./config/app');
 
 // Bootstrap db connection
@@ -36,7 +36,7 @@ require('./config/routes')(app, config, passport);
 
 
 // Start the app by listening on <port>
-var port = process.env.PORT || config.port;
+var port = config.port || process.env.PORT || 3000;
 app.listen(port);
 console.log('Express app started on port ' + port);
 

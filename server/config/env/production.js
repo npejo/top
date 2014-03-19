@@ -1,33 +1,33 @@
 'use strict';
 
 module.exports = {
-    db: "mongodb://localhost/top",
+    db: 'mongodb://localhost/top',
     app: {
-        name: "TOP - App - Production"
+        name: 'TOP - App - Production'
     },
     facebook: {
-        clientID: "APP_ID",
-        clientSecret: "APP_SECRET",
-        callbackURL: "http://localhost:3000/auth/facebook/callback"
+        clientID: 'APP_ID',
+        clientSecret: 'APP_SECRET',
+        callbackURL: 'http://localhost:3000/auth/facebook/callback'
     },
     twitter: {
-        clientID: "CONSUMER_KEY",
-        clientSecret: "CONSUMER_SECRET",
-        callbackURL: "http://localhost:3000/auth/twitter/callback"
+        clientID: 'CONSUMER_KEY',
+        clientSecret: 'CONSUMER_SECRET',
+        callbackURL: 'http://localhost:3000/auth/twitter/callback'
     },
     github: {
-        clientID: "APP_ID",
-        clientSecret: "APP_SECRET",
-        callbackURL: "http://localhost:3000/auth/github/callback"
+        clientID: 'APP_ID',
+        clientSecret: 'APP_SECRET',
+        callbackURL: 'http://localhost:3000/auth/github/callback'
     },
     google: {
-        clientID: "APP_ID",
-        clientSecret: "APP_SECRET",
-        callbackURL: "http://localhost:3000/auth/google/callback"
+        clientID: 'APP_ID',
+        clientSecret: 'APP_SECRET',
+        callbackURL: 'http://localhost:3000/auth/google/callback'
     },
     linkedin: {
-        clientID: "API_KEY",
-        clientSecret: "SECRET_KEY",
-        callbackURL: "http://localhost:3000/auth/linkedin/callback"
+        clientID: 'API_KEY',
+        clientSecret: 'SECRET_KEY',
+        callbackURL: 'http://localhost:3000/auth/linkedin/callback'
     }
-}
+};

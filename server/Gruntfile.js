@@ -12,7 +12,6 @@ module.exports = function(grunt) {
                     'app/**/*.js',
                     'config/**/*.js',
                     'helpers/**/*.js',
-                    'middlewares/**/*.js',
                     'test/**/*.js'
                 ],
                 tasks: ['jshint'],
@@ -29,7 +28,6 @@ module.exports = function(grunt) {
                     'app/**/*.js',
                     'config/**/*.js',
                     'helpers/**/*.js',
-                    'middlewares/**/*.js',
                     'test/**/*.js'
                 ],
                 options: {
@@ -88,6 +86,7 @@ module.exports = function(grunt) {
 
     //Default task(s).
     grunt.registerTask('default', ['jshint', 'concurrent']);
+    grunt.registerTask('testServer', ['jshint', 'env:test', 'concurrent']);
 
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest']);

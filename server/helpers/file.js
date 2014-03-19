@@ -1,4 +1,6 @@
-var fs = require('fs')
+'use strict';
+
+var fs = require('fs');
 var loadDirModules = function (path, exclude, resultObj) {
     var excluded = exclude || [];
 
@@ -25,6 +27,6 @@ var loadDirModules = function (path, exclude, resultObj) {
             }
         }
     });
-}
+};
 
 exports.loadDirModules = loadDirModules;

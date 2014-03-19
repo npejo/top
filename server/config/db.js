@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose');
 
 module.exports = function(config) {
@@ -7,7 +9,7 @@ module.exports = function(config) {
     var connect = function () {
         var options = { server: { socketOptions: { keepAlive: 1 } } };
         db = mongoose.connect(config.db, options);
-    }
+    };
     connect();
 
 // Error handler
@@ -21,4 +23,4 @@ module.exports = function(config) {
     });
 
     return db;
-}
+};

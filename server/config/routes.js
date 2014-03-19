@@ -1,6 +1,6 @@
+'use strict';
 
 var path = require('path'),
-    auth = require('../middlewares/authentication'),
     fileHelper = require('../helpers/file'),
     routes = {};
 
@@ -17,4 +17,4 @@ module.exports = function(app, config, passport) {
     app.get('*', function(req, res) {
         res.sendfile(config.root + '/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
-}
+};
