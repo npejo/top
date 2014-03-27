@@ -27,7 +27,8 @@ module.exports = function (app, config, passport, db) {
     );
 
     app.use(express.favicon());
-    app.use(express.static(config.root + '/public'));
+    console.log(config.root + '/client');
+    app.use(express.static(config.root + '/client'));
 
     app.use(protectJSON);
 
