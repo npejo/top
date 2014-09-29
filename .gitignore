@@ -1,4 +1,6 @@
 server/node_modules/
 server/config/config.js
 .idea/
+*.iml
 client/node_modules/
+client/bower_components/

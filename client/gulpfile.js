@@ -1,8 +1,3 @@
-/*!
- * gulp
- * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache del --save-dev
- */
-
 // Load plugins
 var gulp = require('gulp'),
   sass = require('gulp-ruby-sass'),
@@ -19,7 +14,7 @@ var gulp = require('gulp'),
   del = require('del');
 
 // Styles
-gulp.task('styles', function() {
+gulp.task('styles', function () {
   return gulp.src('src/styles/main.scss')
     .pipe(sass({ style: 'expanded' }))
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
@@ -31,7 +26,7 @@ gulp.task('styles', function() {
 });
 
 // Scripts
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
   return gulp.src('src/scripts/**/*.js')
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
@@ -44,7 +39,7 @@ gulp.task('scripts', function() {
 });
 
 // Images
-gulp.task('images', function() {
+gulp.task('images', function () {
   return gulp.src('src/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
     .pipe(gulp.dest('dist/images'))
@@ -52,17 +47,17 @@ gulp.task('images', function() {
 });
 
 // Clean
-gulp.task('clean', function(cb) {
+gulp.task('clean', function (cb) {
   del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
 });
 
 // Default task
-gulp.task('default', ['clean'], function() {
+gulp.task('default', ['clean'], function () {
   gulp.start('styles', 'scripts', 'images');
 });
 
 // Watch
-gulp.task('watch', function() {
+gulp.task('watch', function () {
 
   // Watch .scss files
   gulp.watch('src/styles/**/*.scss', ['styles']);
