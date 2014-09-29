@@ -5,6 +5,8 @@
 
 // Module dependencies.
 var express = require('express'),
+    router = express.Router(),
+    debug = require('debug')('top'),
     passport = require('passport');
 
 
@@ -28,17 +30,20 @@ require('./config/passport')(passport, config);
 
 var app = express();
 
-// Express settings
-require('./config/express')(app, config, passport, dbConn);
-
 // Bootstrap routes
-require('./config/routes')(app, config, passport);
+require('./config/routes')(router, config, passport);
+
+// Express settings
+require('./config/express')(app, router, config, passport, dbConn);
+
 
 
 // Start the app by listening on <port>
-var port = config.port || process.env.PORT || 3000;
-app.listen(port);
-console.log('Express app started on port ' + port);
+app.set('port', config.port || process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + server.address().port);
+});
 
 // Expose app
 module.exports = app;

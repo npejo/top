@@ -6,15 +6,15 @@ var path = require('path'),
 
 fileHelper.loadDirModules(path.resolve('app/routes'), [], routes);
 
-module.exports = function(app, config, passport) {
+module.exports = function(router, config, passport) {
     var handler = null;
 
     for (handler in routes) {
-        routes[handler](app, config, passport);
+        routes[handler](router, config, passport);
     }
 
     // set default route
-    app.get('*', function(req, res) {
-        res.sendfile(config.root + '/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    router.get('/', function(req, res) {
+        res.sendFile(config.root + '/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 };

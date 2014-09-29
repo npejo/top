@@ -15,36 +15,36 @@ var auth = require('../middlewares/authentication');
  * Expose routes
  */
 
-module.exports = function (app) {
+module.exports = function (router) {
     /**
      * Fetch project document when there is projectId
      */
-    app.param('projectId', projects.getProjectByIdMdlWare);
+    router.param('projectId', projects.getProjectByIdMdlWare);
 
     /**
      * GET /projects - get list of all projects. Route available only for admin users
      */
-    app.get('/projects', auth.requireAdmin, projects.getProjects);
+    router.get('/projects', auth.requireAdmin, projects.getProjects);
 
     /**
      * GET /projects/123456 - get specific project by id
      */
-    app.get('/projects/:projectId', auth.requireLogin, projects.getProjectById);
+    router.get('/projects/:projectId', auth.requireLogin, projects.getProjectById);
 
     /**
      * POST /projects - create new project
      */
-    app.post('/projects', auth.requireLogin, projects.createProject);
+    router.post('/projects', auth.requireLogin, projects.createProject);
 
     /**
      * PUT /projects/123456 - update specific project details
      * TODO: Only the owner can update details about specific project
      */
-    app.put('/projects/:projectId', auth.requireLogin, projects.updateProject);
+    router.put('/projects/:projectId', auth.requireLogin, projects.updateProject);
 
     /**
      * DELETE / projects/123456 - delete project.
      * TODO: Only the owner can delete specific project
      */
-    app.del('/projects/:projectId', auth.requireLogin, projects.deleteProject);
+    router.delete('/projects/:projectId', auth.requireLogin, projects.deleteProject);
 };

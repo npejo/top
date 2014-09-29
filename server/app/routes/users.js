@@ -14,14 +14,14 @@ var users = require('../controllers/users');
  * Expose routes
  */
 
-module.exports = function (app) {
-    app.param('userId', users.getUserByIdMdlWare);
+module.exports = function (router) {
+    router.param('userId', users.getUserByIdMdlWare);
 
     // users routes
-    app.get('/users', users.getUsers);
-    app.get('/users/:userId', users.getUserById);
+    router.get('/users', users.getUsers);
+    router.get('/users/:userId', users.getUserById);
 
-    app.post('/users', users.createUser);
-    app.put('/users/:userId', users.updateUser);
-    app.del('/users/:userId', users.deleteUser);
+    router.post('/users', users.createUser);
+    router.put('/users/:userId', users.updateUser);
+    router.delete('/users/:userId', users.deleteUser);
 };

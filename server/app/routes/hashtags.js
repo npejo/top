@@ -14,12 +14,12 @@ var hashTags = require('../controllers/hashtags');
  * Expose routes
  */
 
-module.exports = function (app) {
-    app.param('hashtagId', hashTags.getHashTagByIdMdlWare);
+module.exports = function (router) {
+    router.param('hashtagId', hashTags.getHashTagByIdMdlWare);
 
-    app.get('/hashtags', hashTags.getHashTags);
-    app.get('/hashtags/:hashtagId', hashTags.getHashTagById);
-    app.post('/hashtags', hashTags.createHashTag);
-    app.put('/hashtags/:hashtagId', hashTags.updateHashTag);
-    app.del('/hashtags/:hashtagId', hashTags.deleteHashTag);
+    router.get('/hashtags', hashTags.getHashTags);
+    router.get('/hashtags/:hashtagId', hashTags.getHashTagById);
+    router.post('/hashtags', hashTags.createHashTag);
+    router.put('/hashtags/:hashtagId', hashTags.updateHashTag);
+    router.delete('/hashtags/:hashtagId', hashTags.deleteHashTag);
 };
