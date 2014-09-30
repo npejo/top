@@ -2,5 +2,5 @@
 
 angular.module('top',[ ])
   .controller('TopController', function ($scope) {
-    $scope.siteName = 'Top';
+    $scope.title = 'Top';
   });

@@ -14,11 +14,11 @@ var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
 var del = require('del');
 var ngAnnotate = require('gulp-ng-annotate');
+var inject = require("gulp-inject");
 
 var paths = {
   all: ['src/**/*.*'],
   scripts: ['src/scripts/**/*.js'],
-  vendor: ['bower_components/**/*.js'],
   styles: ['src/styles/**/*.scss'],
   images: 'src/images/**/*',
   dist: {
@@ -30,6 +30,14 @@ var paths = {
   }
 };
 
+var vendor = {
+  src: [
+    'components/angular/angular.js'
+  ],
+  min: [
+    'components/angular/angular.min.js'
+  ]
+};
 // Styles
 gulp.task('styles', function () {
   return gulp.src(paths.styles)
@@ -44,7 +52,7 @@ gulp.task('styles', function () {
 
 // Scripts
 gulp.task('vendorScripts', function () {
-  return gulp.src(paths.vendor)
+  return gulp.src(vendor.src)
     .pipe(gulp.dest(paths.dist.vendor))
     .pipe(notify({ message: 'Vendor scripts task complete' }));
 });
@@ -74,6 +82,18 @@ gulp.task('images', function () {
 // Clean
 gulp.task('clean', function (cb) {
   del([paths.dist.all], cb)
+});
+
+gulp.task('index', ['copyAll', 'vendorScripts'], function () {
+
+  var target = gulp.src('dist/index.html');
+
+  var sources = gulp.src([paths.dist.scripts + '**/*.js', 'dist/**/*.css'], {read: false});
+  var vendorSources = gulp.src([paths.dist.vendor + '*.js'], {read: false});
+
+  return target.pipe(inject(sources, {relative: true}))
+    .pipe(inject(vendorSources, {relative: true, name: 'vendor'}))
+    .pipe(gulp.dest('dist'));
 });
 
 // Build task
@@ -118,12 +138,12 @@ gulp.task('copyAll', function () {
 
 // Dev build task
 gulp.task('devBuild', ['clean'], function () {
-  gulp.start('copyAll', 'vendorScripts');
+  gulp.start('copyAll', 'vendorScripts', 'index');
 });
 
 // Dev watch
 gulp.task('devWatch', function () {
-  gulp.watch([paths.all], ['copyAll']);
+  gulp.watch([paths.all], ['devBuild']);
 });
 
 // Default task
