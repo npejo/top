@@ -1,58 +1,83 @@
 // Load plugins
-var gulp = require('gulp'),
-  sass = require('gulp-ruby-sass'),
-  autoprefixer = require('gulp-autoprefixer'),
-  minifycss = require('gulp-minify-css'),
-  jshint = require('gulp-jshint'),
-  uglify = require('gulp-uglify'),
-  imagemin = require('gulp-imagemin'),
-  rename = require('gulp-rename'),
-  concat = require('gulp-concat'),
-  notify = require('gulp-notify'),
-  cache = require('gulp-cache'),
-  livereload = require('gulp-livereload'),
-  del = require('del');
+var gulp = require('gulp');
+var sass = require('gulp-ruby-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var minifycss = require('gulp-minify-css');
+var jshint = require('gulp-jshint');
+var uglify = require('gulp-uglify');
+var imagemin = require('gulp-imagemin');
+var rename = require('gulp-rename');
+var concat = require('gulp-concat');
+var notify = require('gulp-notify');
+var cache = require('gulp-cache');
+var livereload = require('gulp-livereload');
+var connect = require('gulp-connect');
+var del = require('del');
+var ngAnnotate = require('gulp-ng-annotate');
+
+var paths = {
+  all: ['src/**/*.*'],
+  scripts: ['src/scripts/**/*.js'],
+  vendor: ['bower_components/**/*.js'],
+  styles: ['src/styles/**/*.scss'],
+  images: 'src/images/**/*',
+  dist: {
+    all: 'dist/',
+    scripts: 'dist/scripts/',
+    vendor: 'dist/components/',
+    styles: 'dist/styles/',
+    images: 'dist/images/'
+  }
+};
 
 // Styles
 gulp.task('styles', function () {
-  return gulp.src('src/styles/main.scss')
+  return gulp.src(paths.styles)
     .pipe(sass({ style: 'expanded' }))
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-    .pipe(gulp.dest('dist/styles'))
+    .pipe(gulp.dest(paths.dist.styles))
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
-    .pipe(gulp.dest('dist/styles'))
+    .pipe(gulp.dest(paths.dist.styles))
     .pipe(notify({ message: 'Styles task complete' }));
 });
 
 // Scripts
+gulp.task('vendorScripts', function () {
+  return gulp.src(paths.vendor)
+    .pipe(gulp.dest(paths.dist.vendor))
+    .pipe(notify({ message: 'Vendor scripts task complete' }));
+});
+
+// Scripts
 gulp.task('scripts', function () {
-  return gulp.src('src/scripts/**/*.js')
+  return gulp.src(paths.scripts)
     .pipe(jshint('../.jshintrc'))
     .pipe(jshint.reporter('default'))
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('dist/scripts'))
+    .pipe(concat('top.js'))
+    .pipe(ngAnnotate())
+    .pipe(gulp.dest(paths.dist.scripts))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts'))
+    .pipe(gulp.dest(paths.dist.scripts))
     .pipe(notify({ message: 'Scripts task complete' }));
 });
 
 // Images
 gulp.task('images', function () {
-  return gulp.src('src/images/**/*')
+  return gulp.src(paths.images)
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest(paths.dist.images))
     .pipe(notify({ message: 'Images task complete' }));
 });
 
 // Clean
 gulp.task('clean', function (cb) {
-  del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
+  del([paths.dist.all], cb)
 });
 
-// Default task
-gulp.task('default', ['clean'], function () {
+// Build task
+gulp.task('build', ['clean'], function () {
   gulp.start('styles', 'scripts', 'images');
 });
 
@@ -60,18 +85,48 @@ gulp.task('default', ['clean'], function () {
 gulp.task('watch', function () {
 
   // Watch .scss files
-  gulp.watch('src/styles/**/*.scss', ['styles']);
+  gulp.watch(paths.styles, ['styles']);
 
   // Watch .js files
-  gulp.watch('src/scripts/**/*.js', ['scripts']);
+  gulp.watch(paths.scripts, ['scripts']);
 
   // Watch image files
-  gulp.watch('src/images/**/*', ['images']);
+  gulp.watch(paths.images, ['images']);
 
   // Create LiveReload server
   livereload.listen();
 
   // Watch any files in dist/, reload on change
-  gulp.watch(['dist/**']).on('change', livereload.changed);
+  gulp.watch([paths.dist.all + '**']).on('change', livereload.changed);
 
+});
+
+// Webserver
+gulp.task('webserver', function () {
+  connect.server({
+    livereload: true,
+    root: 'dist'
+  });
+});
+
+// Dev copy files
+gulp.task('copyAll', function () {
+  return gulp.src('src/**/*.*')
+    .pipe(gulp.dest('dist/'))
+    .pipe(connect.reload());
+});
+
+// Dev build task
+gulp.task('devBuild', ['clean'], function () {
+  gulp.start('copyAll', 'vendorScripts');
+});
+
+// Dev watch
+gulp.task('devWatch', function () {
+  gulp.watch([paths.all], ['copyAll']);
+});
+
+// Default task
+gulp.task('serve', ['devBuild', 'devWatch'], function () {
+  gulp.start('webserver');
 });
