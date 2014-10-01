@@ -11,7 +11,7 @@ var concat = require('gulp-concat');
 var notify = require('gulp-notify');
 var cache = require('gulp-cache');
 var livereload = require('gulp-livereload');
-var connect = require('gulp-connect');
+var webserver = require('gulp-webserver');
 var del = require('del');
 var ngAnnotate = require('gulp-ng-annotate');
 var inject = require("gulp-inject");
@@ -123,17 +123,24 @@ gulp.task('watch', function () {
 
 // Webserver
 gulp.task('webserver', function () {
-  connect.server({
-    livereload: true,
-    root: 'dist'
-  });
+  gulp.src('dist')
+    .pipe(webserver({
+      livereload: true,
+      port: 8080,
+      open: true,
+      proxies: [
+        {
+          source: '/notes',
+          target: 'http://localhost:3000/notes'
+        }
+      ]
+    }));
 });
 
 // Dev copy files
 gulp.task('copyAll', function () {
   return gulp.src('src/**/*.*')
-    .pipe(gulp.dest('dist/'))
-    .pipe(connect.reload());
+    .pipe(gulp.dest('dist/'));
 });
 
 // Dev build task
@@ -147,7 +154,9 @@ gulp.task('devWatch', function () {
 });
 
 // Serve task
-gulp.task('serve', ['devBuild', 'devWatch'], function () {
+gulp.task('serve', function () {
+  gulp.start('devBuild');
+  gulp.start('devWatch');
   gulp.start('webserver');
 });
 

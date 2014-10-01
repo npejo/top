@@ -35,7 +35,7 @@
     "gulp-autoprefixer": "^1.0.1",
     "gulp-notify": "^1.8.0",
     "gulp-imagemin": "^1.0.1",
-    "gulp-connect": "^2.0.6",
+    "gulp-webserver": "^0.8.3",
     "gulp-ng-annotate": "^0.3.3",
     "gulp-inject": "^1.0.2"
   }
