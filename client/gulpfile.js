@@ -146,7 +146,12 @@ gulp.task('devWatch', function () {
   gulp.watch([paths.all], ['devBuild']);
 });
 
-// Default task
+// Serve task
 gulp.task('serve', ['devBuild', 'devWatch'], function () {
   gulp.start('webserver');
+});
+
+// Default task
+gulp.task('default', function () {
+  gulp.start('serve');
 });
