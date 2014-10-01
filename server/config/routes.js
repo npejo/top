@@ -15,6 +15,6 @@ module.exports = function(router, config, passport) {
 
     // set default route
     router.get('/', function(req, res) {
-        res.sendFile(config.root + '/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+        res.sendFile(config.root + '/client/dist/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 };

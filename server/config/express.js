@@ -35,7 +35,7 @@ module.exports = function (app, router, config, passport, db) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use(express.static(config.root + '/client'));
+    app.use(express.static(config.root + '/client/dist'));
 
     app.use(protectJSON);
 
