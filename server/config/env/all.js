@@ -5,6 +5,7 @@ var path = require('path');
 module.exports = {
 	root: path.normalize(__dirname + '/../../..'),
 	port: process.env.PORT || 3000,
+	clientPublic: root + '/client/dist',
 
 	// The secret should be set to a non-guessable string that
 	// is used to compute a session hash

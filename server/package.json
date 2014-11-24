@@ -1,9 +1,9 @@
 {
-  "name": "TOP",
+  "name": "top",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-      "start": "node node_modules/grunt-cli/bin/grunt",
+      "start": "NODE_ENV=development node ./bin/www",
       "test": "node node_modules/grunt-cli/bin/grunt test"
   },
 

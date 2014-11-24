@@ -14,8 +14,6 @@ var express = require('express'),
     csrf = require('csurf'),
     mongoStore = require('connect-mongo')(session),
     flash = require('connect-flash'),
-    compression = require('compression'),
-//    winston = require('winston'),
     pkg = require('../package.json'),
     protectJSON = require('../helpers/protectJSON');
 
@@ -24,7 +22,7 @@ var env = process.env.NODE_ENV || 'development';
 module.exports = function (app, router, config, passport, db) {
 
     // should be placed before express.static
-    app.use(compression());
+    //app.use(compression());
 
     // view engine setup
     app.set('views', config.root + '/server/views');
@@ -35,7 +33,7 @@ module.exports = function (app, router, config, passport, db) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use(express.static(config.root + '/client/dist'));
+    app.use(express.static(config.clientPublic));
 
     app.use(protectJSON);
 
@@ -56,19 +54,12 @@ module.exports = function (app, router, config, passport, db) {
 //    // Don't log during tests
 //    if (env !== 'test') app.use(logger(log));
 
-    // expose package.json to views
-    app.use(function (req, res, next) {
-        res.locals.pkg = pkg;
-        res.locals.appName = config.app.name;
-        next();
-    });
-
     // express/mongo session storage
     app.use(session({
             secret: config.sessionSecret,
             store: new mongoStore({
                 db: db.connection.db,
-                collection : config.sessionCollection,
+                collection : config.sessionCollection
             }),
             resave: false,
             saveUninitialized: false
